@@ -26,7 +26,7 @@
         <?php
         if ($adding)
         {
-            eT("Add a new question");
+            eT("Add a new question dev");
         }
         elseif ($copying)
         {
