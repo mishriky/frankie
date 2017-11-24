@@ -138,6 +138,11 @@ class remotecontrol_handle
         {
             if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
+                if($sSurveyTitle=='') return array('status' => 'Faulty parameter: title');
+                if($sSurveyLanguage=='') return array('status' => 'Faulty parameter: language empty');
+                if(!array_key_exists($sSurveyLanguage,getLanguageDataRestricted())) return array('status' => 'Faulty parameter: language restricted');
+                if(!in_array($sformat, array('A','G','S'))) return array('status' => 'Faulty parameter: format');
+
                 if( $sSurveyTitle=='' || $sSurveyLanguage=='' || !array_key_exists($sSurveyLanguage,getLanguageDataRestricted()) || !in_array($sformat, array('A','G','S')))
                     return array('status' => 'Faulty parameters');
 
