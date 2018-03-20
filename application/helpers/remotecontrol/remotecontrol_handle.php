@@ -1025,6 +1025,7 @@ class remotecontrol_handle
 
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $iSurveyID;
+                $oGroup->setIsNewRecord(false);
                 $oGroup->group_name =  $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
@@ -1490,6 +1491,7 @@ class remotecontrol_handle
 
                     try
                     {
+                        $oQuestion->setIsNewRecord(false);
                         $oQuestion->save();
                     }
                     catch(Exception $e)
