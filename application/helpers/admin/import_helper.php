@@ -431,6 +431,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         $oQuestion->setAttributes($insertdata, false);
         if(!$oQuestion->validate(array('title')) && $options['autorename']){
             if(isset($sNewTitle)){
+                error_log(sprintf('validation failed but new title is set so will set it and continue'));
                 $oQuestion->title=$sNewTitle;
             }else{
                 $sOldTitle=$oQuestion->title;
@@ -444,6 +445,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         }
         if (!$oQuestion->save())
         {
+            error_log(sprintf('save failed with error: %s', $results['fatalerror']));
             $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
             return $results;
         }

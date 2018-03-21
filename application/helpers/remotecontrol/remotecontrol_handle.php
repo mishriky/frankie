@@ -1487,7 +1487,7 @@ class remotecontrol_handle
 
                 if (isset($aImportResults['fatalerror']))
                 {
-                    error_log('imported with fatal');
+                    error_log(sprintf('imported with fatal %s', $aImportResults['fatalerror']));
                     libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
                     return array('status' => 'Error: '.$aImportResults['fatalerror']);
                 }
