@@ -1033,7 +1033,7 @@ class remotecontrol_handle
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $iSurveyID;
                 error_log('pre new record');
-                $oGroup->setIsNewRecord(false);
+//                $oGroup->setIsNewRecord(false);
                 error_log('post new record');
                 $oGroup->group_name =  $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
@@ -1514,7 +1514,7 @@ class remotecontrol_handle
                     try
                     {
                         error_log(sprintf('will save'));
-                        $oQuestion->setIsNewRecord(false);
+//                        $oQuestion->setIsNewRecord(false);
                         $oQuestion->save();
                     }
                     catch(Exception $e)

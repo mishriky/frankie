@@ -445,8 +445,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         }
         if (!$oQuestion->save())
         {
-            error_log(sprintf('save failed with error: %s', $results['fatalerror']));
             $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
+            error_log(sprintf('save failed with error: %s', $results['fatalerror']));
             return $results;
         }
         if (!isset($aQIDReplacements[$oldqid]))
