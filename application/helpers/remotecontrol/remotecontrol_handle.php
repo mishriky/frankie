@@ -1463,6 +1463,7 @@ class remotecontrol_handle
 
                 if ( strtolower($sImportDataType)=='lsq')
                 {
+                    error_log('importing lsq');
                     $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
 
                     $sXMLdata = file_get_contents($sFullFilePath);
@@ -1474,6 +1475,7 @@ class remotecontrol_handle
                         return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
                     }
                     $aImportResults =  XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
+                    error_log('imported question');
                 }
                 else
                 {
@@ -1485,6 +1487,7 @@ class remotecontrol_handle
 
                 if (isset($aImportResults['fatalerror']))
                 {
+                    error_log('imported with fatal');
                     libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
                     return array('status' => 'Error: '.$aImportResults['fatalerror']);
                 }
@@ -1492,7 +1495,7 @@ class remotecontrol_handle
                 {
                     fixLanguageConsistency($iSurveyID);
                     $iNewqid = $aImportResults['newqid'];
-
+                    error_log(sprintf('new question id: %s', $iNewqid));
                     $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
                     if($sNewQuestionTitle!=NULL)
                         $oQuestion->setAttribute('title',$sNewQuestionTitle);
@@ -1510,11 +1513,13 @@ class remotecontrol_handle
 
                     try
                     {
+                        error_log(sprintf('will save'));
                         $oQuestion->setIsNewRecord(false);
                         $oQuestion->save();
                     }
                     catch(Exception $e)
                     {
+                        error_log(sprintf('exception!'));
                         // no need to throw exception
                     }
                     return (int)$aImportResults['newqid'];
