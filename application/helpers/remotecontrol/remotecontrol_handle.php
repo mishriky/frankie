@@ -1011,17 +1011,22 @@ class remotecontrol_handle
     */
     public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
     {
+        error_log('in add_group');
         if ($this->_checkSessionKey($sSessionKey))
         {
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
                 $iSurveyID=(int)$iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
-                if (!isset($oSurvey))
+                if (!isset($oSurvey)) {
+                    error_log('invalid survey id');
                     return array('status' => 'Error: Invalid survey ID');
+                }
 
-                if($oSurvey['active']=='Y')
+                if($oSurvey['active']=='Y') {
+                    error_log('survey ineditable');
                     return array('status' => 'Error:Survey is active and not editable');
+                }
 
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $iSurveyID;
@@ -1030,10 +1035,14 @@ class remotecontrol_handle
                 $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
                 $oGroup->language =  Survey::model()->findByPk($iSurveyID)->language;
-                if($oGroup->save())
+                if($oGroup->save()) {
+                    error_log('success saving');
                     return (int)$oGroup->gid;
-                else
+                }
+                else {
+                    error_log('failed saving');
                     return array('status' => 'Creation Failed');
+                }
             }
             else
                 return array('status' => 'No permission');
@@ -1420,9 +1429,11 @@ class remotecontrol_handle
             $iSurveyID=(int)$iSurveyID;
             $iGroupID=(int)$iGroupID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey))
+            if (!isset($oSurvey)) {
+                error_log('couldnt find survey');
                 return array('status' => 'Error: Invalid survey ID');
-
+            }
+            error_log('found survey');
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
                 if($oSurvey->getAttribute('active') =='Y')
@@ -1433,8 +1444,10 @@ class remotecontrol_handle
                     return array('status' => 'Error: Invalid group ID');
 
                 $sGroupSurveyID = $oGroup['sid'];
-                if($sGroupSurveyID != $iSurveyID)
+                if($sGroupSurveyID != $iSurveyID) {
+                    error_log('Error: Missmatch in surveyid and groupid');
                     return array('status' => 'Error: Missmatch in surveyid and groupid');
+                }
 
                 if (!strtolower($sImportDataType)=='lsq') return array('status' => 'Invalid extension');
                 libxml_use_internal_errors(true);
