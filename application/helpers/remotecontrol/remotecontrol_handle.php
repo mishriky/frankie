@@ -1014,8 +1014,10 @@ class remotecontrol_handle
         error_log('in add_group');
         if ($this->_checkSessionKey($sSessionKey))
         {
+            error_log('session key is valid');
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
+                error_log('has permissions');
                 $iSurveyID=(int)$iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey)) {
@@ -1030,11 +1032,14 @@ class remotecontrol_handle
 
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $iSurveyID;
+                error_log('pre new record');
                 $oGroup->setIsNewRecord(false);
+                error_log('post new record');
                 $oGroup->group_name =  $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
                 $oGroup->language =  Survey::model()->findByPk($iSurveyID)->language;
+                error_log('got language');
                 if($oGroup->save()) {
                     error_log('success saving');
                     return (int)$oGroup->gid;
