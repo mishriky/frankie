@@ -807,10 +807,15 @@ abstract class CActiveRecord extends CModel
 	 */
 	public function save($runValidation=true,$attributes=null)
 	{
-		if(!$runValidation || $this->validate($attributes))
-			return $this->getIsNewRecord() ? $this->insert($attributes) : $this->update($attributes);
-		else
-			return false;
+        error_log('will validate');
+        if(!$runValidation || $this->validate($attributes)) {
+            error_log('record is valid');
+            return $this->getIsNewRecord() ? $this->insert($attributes) : $this->update($attributes);
+        }
+		else {
+            error_log('record invalid');
+            return false;
+        }
 	}
 
 	/**
@@ -1072,6 +1077,7 @@ abstract class CActiveRecord extends CModel
 	 */
 	public function insert($attributes=null)
 	{
+        error_log('inserting new');
 		if(!$this->getIsNewRecord())
 			throw new CDbException(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
 		if($this->beforeSave())
@@ -1120,6 +1126,7 @@ abstract class CActiveRecord extends CModel
 	 */
 	public function update($attributes=null)
 	{
+        error_log('updating record');
 		if($this->getIsNewRecord())
 			throw new CDbException(Yii::t('yii','The active record cannot be updated because it is new.'));
 		if($this->beforeSave())
