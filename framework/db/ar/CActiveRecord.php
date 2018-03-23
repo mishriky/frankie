@@ -1133,6 +1133,8 @@ abstract class CActiveRecord extends CModel
 //            error_log('record is new. will fail');
 //            throw new CDbException(Yii::t('yii', 'The active record cannot be updated because it is new.'));
 //        }
+
+        $this->setIsNewRecord(false);
 		if($this->beforeSave())
 		{
 			Yii::trace(get_class($this).'.update()','system.db.ar.CActiveRecord');
