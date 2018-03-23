@@ -807,15 +807,17 @@ abstract class CActiveRecord extends CModel
 	 */
 	public function save($runValidation=true,$attributes=null)
 	{
-        error_log('will validate');
-        if(!$runValidation || $this->validate($attributes)) {
-            error_log('record is valid');
-            return $this->getIsNewRecord() ? $this->insert($attributes) : $this->update($attributes);
-        }
-		else {
-            error_log('record invalid');
-            return false;
-        }
+        error_log(sprintf('will validate. attributes are: %s', is_null($attributes)));
+//        if(!$runValidation || $this->validate($attributes)) {
+//            error_log('record is valid');
+            error_log('will update anyway');
+//            return $this->getIsNewRecord() ? $this->insert($attributes) :
+                return $this->update($attributes);
+//        }
+//		else {
+//            error_log('record invalid');
+//            return false;
+//        }
 	}
 
 	/**
