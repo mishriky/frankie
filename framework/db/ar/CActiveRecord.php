@@ -1136,11 +1136,14 @@ abstract class CActiveRecord extends CModel
 		if($this->beforeSave())
 		{
 			Yii::trace(get_class($this).'.update()','system.db.ar.CActiveRecord');
-			error_log(sprintf('pk is %s', $this->_pk));
+
+			error_log(sprintf('pk is %s', $this->_pk[0]));
 			if($this->_pk===null)
 				$this->_pk=$this->getPrimaryKey();
 
-            error_log(sprintf('pk is %s', $this->_pk));
+            foreach ($this->_pk as $value) {
+                error_log(sprintf('pk is %s', $value));
+            }
 
 			$this->updateByPk($this->getOldPrimaryKey(),$this->getAttributes($attributes));
 			$this->_pk=$this->getPrimaryKey();
