@@ -1141,10 +1141,6 @@ abstract class CActiveRecord extends CModel
 			if($this->_pk===null)
 				$this->_pk=$this->getPrimaryKey();
 
-            foreach ($this->_pk as $value) {
-                error_log(sprintf('pk is %s', $value));
-            }
-
 			$this->updateByPk($this->getOldPrimaryKey(),$this->getAttributes($attributes));
 			$this->_pk=$this->getPrimaryKey();
 			$this->afterSave();
