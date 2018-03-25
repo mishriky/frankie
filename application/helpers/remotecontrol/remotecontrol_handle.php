@@ -1518,7 +1518,8 @@ class remotecontrol_handle
                     try
                     {
                         error_log(sprintf('will save'));
-                        $oQuestion->setIsNewRecord(false);
+                        //This has no effect. Fuck php
+//                        $oQuestion->setIsNewRecord(false);
                         $oQuestion->save();
                     }
                     catch(Exception $e)

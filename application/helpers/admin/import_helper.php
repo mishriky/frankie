@@ -349,6 +349,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('autorename'=>false))
 {
+    error_log('in XMLImportQuestion');
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
@@ -390,6 +391,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
 
+    error_log('past language shit');
 
     $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$iNewSID AND gid=$newgid";
     $res = Yii::app()->db->createCommand($query)->query();
@@ -430,19 +432,24 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         $oQuestion = new Question('import');
         $oQuestion->setAttributes($insertdata, false);
         if(!$oQuestion->validate(array('title')) && $options['autorename']){
+            error_log('title validation failed but will try something else');
             if(isset($sNewTitle)){
                 error_log(sprintf('validation failed but new title is set so will set it and continue'));
                 $oQuestion->title=$sNewTitle;
             }else{
+                error_log('new title not set');
                 $sOldTitle=$oQuestion->title;
                 $oQuestion->title=$sNewTitle=$oQuestion->getNewTitle();
                 if(!$sNewTitle){
+                    error_log('still no title. will return');
                     $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
                     return $results;
                 }
                 $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
             }
         }
+        error_log('will set to update');
+        $oQuestion->setIsNewRecord(false);
         if (!$oQuestion->save())
         {
             $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
