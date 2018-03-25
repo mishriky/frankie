@@ -818,8 +818,10 @@ abstract class CActiveRecord extends CModel
                 return $this->update($attributes);
             }
         }
-		else
-			return false;
+		else {
+		    error_log('couldnt pass validation. returning false');
+            return false;
+        }
 	}
 
 	/**
