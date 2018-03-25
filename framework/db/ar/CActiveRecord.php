@@ -807,17 +807,19 @@ abstract class CActiveRecord extends CModel
 	 */
 	public function save($runValidation=true,$attributes=null)
 	{
-        error_log(sprintf('will validate. attributes are: %s', is_null($attributes)));
-//        if(!$runValidation || $this->validate($attributes)) {
-//            error_log('record is valid');
-            error_log('will update anyway');
-//            return $this->getIsNewRecord() ? $this->insert($attributes) :
+	    error_log('saving');
+		if(!$runValidation || $this->validate($attributes)) {
+            error_log('ran validation successfully');
+		    if ($this->getIsNewRecord()) {
+                error_log('record is new. will insert');
+                return $this->insert($attributes);
+            } else {
+		        error_log('record is not new. will update');
                 return $this->update($attributes);
-//        }
-//		else {
-//            error_log('record invalid');
-//            return false;
-//        }
+            }
+        }
+		else
+			return false;
 	}
 
 	/**
@@ -1129,14 +1131,14 @@ abstract class CActiveRecord extends CModel
 	public function update($attributes=null)
 	{
         error_log('updating record');
-//		if($this->getIsNewRecord()) {
-//            error_log('record is new. will fail');
-//            throw new CDbException(Yii::t('yii', 'The active record cannot be updated because it is new.'));
-//        }
+		if($this->getIsNewRecord()) {
+            error_log('record is new. will fail');
+            throw new CDbException(Yii::t('yii', 'The active record cannot be updated because it is new.'));
+        }
 
-        $this->setIsNewRecord(false);
 		if($this->beforeSave())
 		{
+            error_log('ran before save');
 			Yii::trace(get_class($this).'.update()','system.db.ar.CActiveRecord');
 
 			error_log(sprintf('pk is %s', $this->_pk[0]));
@@ -1155,8 +1157,10 @@ abstract class CActiveRecord extends CModel
             error_log(sprintf('ran afterSave'));
 			return true;
 		}
-		else
-			return false;
+		else {
+            error_log('before save failed');
+            return false;
+        }
 	}
 
 	/**

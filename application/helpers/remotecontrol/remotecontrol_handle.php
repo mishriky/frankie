@@ -40,6 +40,7 @@ class remotecontrol_handle
     */
     public function get_session_key($username, $password)
     {
+        error_log('getting session key');
         $username= (string)$username;
         $password= (string)$password;
         if ($this->_doLogin($username, $password))
@@ -57,10 +58,13 @@ class remotecontrol_handle
                 $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.Yii::app()->db->quoteValue($username).')');
             $session->data = $username;
             $session->save();
+            error_log('returning session key');
             return $sSessionKey;
         }
-        else
+        else {
+            error_log('invalid user');
             return array('status' => 'Invalid user name or password');
+        }
     }
 
     /**
@@ -1514,7 +1518,7 @@ class remotecontrol_handle
                     try
                     {
                         error_log(sprintf('will save'));
-//                        $oQuestion->setIsNewRecord(false);
+                        $oQuestion->setIsNewRecord(false);
                         $oQuestion->save();
                     }
                     catch(Exception $e)
