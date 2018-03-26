@@ -417,17 +417,17 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         $insertdata['sid']=$iNewSID;
         $insertdata['gid']=$newgid;
         $insertdata['question_order']=$newquestionorder;
-        $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+//        $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
         // now translate any links
         $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
         $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
         $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
         // Insert the new question
-        if (isset($aQIDReplacements[$oldqid]))
-        {
-            $insertdata['qid']=$aQIDReplacements[$oldqid];
-        }
+//        if (isset($aQIDReplacements[$oldqid]))
+//        {
+//            $insertdata['qid']=$aQIDReplacements[$oldqid];
+//        }
 
         $oQuestion = new Question('import');
         $oQuestion->setAttributes($insertdata, false);
