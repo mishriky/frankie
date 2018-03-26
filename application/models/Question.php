@@ -83,11 +83,11 @@ class Question extends LSActiveRecord
                     array('title','required','on' => 'update, insert','message'=>gT('Question code may not be empty.','unescaped')),
                     array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
                     array('qid', 'numerical','integerOnly'=>true),
-                    array('qid', 'unique', 'criteria'=>array(
-                                    'condition'=>'language=:language',
-                                    'params'=>array(':language'=>$this->language)
-                            ),
-                            'message'=>'{attribute} "{value}" is already in use.'),
+//                    array('qid', 'unique', 'criteria'=>array(
+//                                    'condition'=>'language=:language',
+//                                    'params'=>array(':language'=>$this->language)
+//                            ),
+//                            'message'=>'{attribute} "{value}" is already in use.'),
                     array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
                     array('title,question,help','LSYii_Validators'),
                     array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
