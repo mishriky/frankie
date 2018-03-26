@@ -135,14 +135,14 @@ class Question extends LSActiveRecord
         }
         if(!$this->parent_qid)// 0 or empty
         {
-            $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                                'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
-                                'params' => array(
-                                    ':language' => $this->language,
-                                    ':sid' => $this->sid
-                                    )
-                                ),
-                            'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
+//            $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+//                                'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
+//                                'params' => array(
+//                                    ':language' => $this->language,
+//                                    ':sid' => $this->sid
+//                                    )
+//                                ),
+//                            'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
             $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
         }
         else
