@@ -448,8 +448,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
                 $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
             }
         }
-        error_log('will set to update');
-        $oQuestion->setIsNewRecord(false);
+//        error_log('will set to update');
+//        $oQuestion->setIsNewRecord(false);
         if (!$oQuestion->save())
         {
             $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
