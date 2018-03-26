@@ -83,11 +83,11 @@ class Question extends LSActiveRecord
                     array('title','required','on' => 'update, insert','message'=>gT('Question code may not be empty.','unescaped')),
                     array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
                     array('qid', 'numerical','integerOnly'=>true),
-//                    array('qid', 'unique', 'criteria'=>array(
-//                                    'condition'=>'language=:language',
-//                                    'params'=>array(':language'=>$this->language)
-//                            ),
-//                            'message'=>'{attribute} "{value}" is already in use.'),
+                    array('qid', 'unique', 'criteria'=>array(
+                                    'condition'=>'language=:language',
+                                    'params'=>array(':language'=>$this->language)
+                            ),
+                            'message'=>'{attribute} "{value}" is already in use.'),
                     array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
                     array('title,question,help','LSYii_Validators'),
                     array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
@@ -135,14 +135,14 @@ class Question extends LSActiveRecord
         }
         if(!$this->parent_qid)// 0 or empty
         {
-//            $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-//                                'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
-//                                'params' => array(
-//                                    ':language' => $this->language,
-//                                    ':sid' => $this->sid
-//                                    )
-//                                ),
-//                            'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
+            $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+                                'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
+                                'params' => array(
+                                    ':language' => $this->language,
+                                    ':sid' => $this->sid
+                                    )
+                                ),
+                            'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
             $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
         }
         else
