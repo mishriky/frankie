@@ -1148,14 +1148,14 @@ abstract class CActiveRecord extends CModel
 				$this->_pk=$this->getPrimaryKey();
 
             error_log(sprintf('pk is %s', $this->_pk));
-            error_log(sprintf('pk is %s', $this->_pk[0]));
-            error_log(sprintf('pk is %s', $this->_pk[1]));
+            error_log(sprintf('pk is %d', $this->_pk[0]));
+            error_log(sprintf('pk is %d', $this->_pk[1]));
 
             $oldPk = $this->getOldPrimaryKey();
-            error_log(sprintf('old pk is %s', $oldPk[0]));
+            error_log(sprintf('old pk is %d', $oldPk[0]));
 
             $attr = $this->getAttributes($attributes);
-            error_log(sprintf('attr is %s', $attr[0]));
+            error_log(sprintf('attr is %d', $attr[0]));
 
             $this->updateByPk($oldPk, $attr);
             error_log(sprintf('ran update'));
