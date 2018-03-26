@@ -808,7 +808,7 @@ abstract class CActiveRecord extends CModel
 	public function save($runValidation=true,$attributes=null)
 	{
 	    error_log('saving');
-		if(!$runValidation || $this->validate($attributes)) {
+		if(!$runValidation || $this->validate($attributes, !$this->getIsNewRecord())) {
             error_log('ran validation successfully');
 		    if ($this->getIsNewRecord()) {
                 error_log('record is new. will insert');

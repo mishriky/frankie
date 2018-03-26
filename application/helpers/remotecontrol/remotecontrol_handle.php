@@ -1416,21 +1416,22 @@ class remotecontrol_handle
 
 
     /**
-    * Import a question from lsq file
-    *
-    * @access public
-    * @param string $sSessionKey
-    * @param int $iSurveyID The ID of the Survey that the question will belong to
-    * @param int $iGroupID The ID of the Group that the question will belong to
-    * @param string $sImportData String containing the BASE 64 encoded data of a lsq
-    * @param string $sImportDataType  lsq
-    * @param string $sMandatory (optional) Mandatory question option (default to No)
-    * @param string $sNewQuestionTitle  (optional) new title for the question
-    * @param string $sNewqQuestion (optional) new question text
-    * @param string $sNewQuestionHelp (optional) new question help text
-    * @return array|integer The id of the new question in case of success. Array if errors
-    */
-    public function import_question($sSessionKey, $iSurveyID,$iGroupID, $sImportData, $sImportDataType, $sMandatory='N', $sNewQuestionTitle=NULL, $sNewqQuestion=NULL, $sNewQuestionHelp=NULL)
+     * Import a question from lsq file
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @param int $iSurveyID The ID of the Survey that the question will belong to
+     * @param int $iGroupID The ID of the Group that the question will belong to
+     * @param string $sImportData String containing the BASE 64 encoded data of a lsq
+     * @param string $sImportDataType lsq
+     * @param string $sMandatory (optional) Mandatory question option (default to No)
+     * @param string $sNewQuestionTitle (optional) new title for the question
+     * @param string $sNewqQuestion (optional) new question text
+     * @param string $sNewQuestionHelp (optional) new question help text
+     * @param bool $update
+     * @return array|int The id of the new question in case of success. Array if errors
+     */
+    public function import_question($sSessionKey, $iSurveyID,$iGroupID, $sImportData, $sImportDataType, $sMandatory='N', $sNewQuestionTitle=NULL, $sNewqQuestion=NULL, $sNewQuestionHelp=NULL, $update = false)
     {
         error_log('in import question');
         if ($this->_checkSessionKey($sSessionKey))
@@ -1478,7 +1479,7 @@ class remotecontrol_handle
                         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
                         return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
                     }
-                    $aImportResults =  XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
+                    $aImportResults =  XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID, $update);
                     error_log('imported question');
                 }
                 else

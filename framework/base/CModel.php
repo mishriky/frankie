@@ -149,21 +149,24 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 	 * @see beforeValidate
 	 * @see afterValidate
 	 */
-	public function validate($attributes=null, $clearErrors=true)
+	public function validate($attributes=null, $clearErrors=true, $update = false)
 	{
         error_log('in validate');
 		if($clearErrors)
 			$this->clearErrors();
-		if($this->beforeValidate())
-		{
-//			foreach($this->getValidators() as $validator)
-//				$validator->validate($this,$attributes);
-//			$this->afterValidate();
-            error_log('ran validation');
-			return !$this->hasErrors();
-		}
-		else
-			return false;
+
+        if (!$update) {
+            if ($this->beforeValidate()) {
+                foreach ($this->getValidators() as $validator)
+                    $validator->validate($this, $attributes);
+                $this->afterValidate();
+                error_log('ran validation');
+                return !$this->hasErrors();
+            } else
+                return false;
+        } else {
+            return true;
+        }
 	}
 
 	/**

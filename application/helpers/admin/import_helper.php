@@ -347,7 +347,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 * @param mixed $iNewSID The new survey id
 * @param mixed $newgid The new question group id -the question will always be added after the last question in the group
 */
-function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('autorename'=>false))
+function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('autorename'=>false), $update = false)
 {
     error_log('in XMLImportQuestion');
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
@@ -417,17 +417,20 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         $insertdata['sid']=$iNewSID;
         $insertdata['gid']=$newgid;
         $insertdata['question_order']=$newquestionorder;
-//        $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+
+        if(!$update) {
+            $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+        }
 
         // now translate any links
         $insertdata['title']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['title']);
         $insertdata['question']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
         $insertdata['help']=translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
         // Insert the new question
-//        if (isset($aQIDReplacements[$oldqid]))
-//        {
-//            $insertdata['qid']=$aQIDReplacements[$oldqid];
-//        }
+        if (!$update && isset($aQIDReplacements[$oldqid]))
+        {
+            $insertdata['qid']=$aQIDReplacements[$oldqid];
+        }
 
         $oQuestion = new Question('import');
         $oQuestion->setAttributes($insertdata, false);
@@ -448,8 +451,10 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
                 $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
             }
         }
-//        error_log('will set to update');
-//        $oQuestion->setIsNewRecord(false);
+        if ($update) {
+            error_log('will set to update');
+            $oQuestion->setIsNewRecord(false);
+        }
         if (!$oQuestion->save())
         {
             $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
