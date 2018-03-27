@@ -1433,7 +1433,7 @@ class remotecontrol_handle
      */
     public function import_question($sSessionKey, $iSurveyID,$iGroupID, $sImportData, $sImportDataType, $sMandatory='N', $sNewQuestionTitle=NULL, $sNewqQuestion=NULL, $sNewQuestionHelp=NULL, $update = false)
     {
-        error_log('in import question');
+        error_log(sprintf('in import question with update = %b', $update));
         if ($this->_checkSessionKey($sSessionKey))
         {
             $iSurveyID=(int)$iSurveyID;
