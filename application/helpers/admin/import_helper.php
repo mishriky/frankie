@@ -454,6 +454,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         if ($update) {
             error_log('will set to update');
             $oQuestion->setIsNewRecord(false);
+        } else {
+            error_log('not update');
         }
         if (!$oQuestion->save())
         {
