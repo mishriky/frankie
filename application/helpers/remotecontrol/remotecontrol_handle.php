@@ -1479,7 +1479,7 @@ class remotecontrol_handle
                         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
                         return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
                     }
-                    $aImportResults =  XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID, $update);
+                    $aImportResults =  XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID, true);
                     error_log('imported question');
                 }
                 else
